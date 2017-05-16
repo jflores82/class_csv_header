@@ -21,6 +21,18 @@ Returns the entire CSV file, in order.
 
 ->ReadCSVFilter(**filterfield** (required, int, num of column to be read), **filter** (required, string, what to match), _separator_, _enclosure_)
 Returns the CSV file, but only the lines where column **filterfield** matches **filter**
+Column numbers starts at zero. So, 0 = first column, 1 = second column and so on.
+
+ex.
+```php
+$read_entire = $csv->ReadCSV(1, ";", "'");
+var_dump($read_entire) // Entire CSV file with header and data enclosed by "", while separated by ;
+```
+
+```php
+$read_filtered = $csv->ReadCSV(1, "foo");
+var_dump($read_filtered) // Array containing only the rows in which the column 1 (second column) has the value "foo"
+```
 
 
 ## Known Bugs 
