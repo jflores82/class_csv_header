@@ -16,10 +16,10 @@ $csv = new csvreader($csv_file);
 ```
 
 ## Methods:
-###->ReadCSV:
+### ->ReadCSV:
 Returns the entire CSV file, in order. 
 
-Arguments:
+#### Arguments:
 _hasHeader_: optional, Int 0/1, Default 1
 _separator_: optional, string, Default ;
  _enclosure_: optional, string, Default "
@@ -38,11 +38,11 @@ array(
 ```
 
 
-###->ReadCSVFilter
+### ->ReadCSVFilter
 Returns the CSV file, but only the lines where column **filterfield** matches **filter**
 Column numbers starts at zero. So, 0 = first column, 1 = second column and so on.
 
-Arguments:
+#### Arguments:
 **filterfield**: required, int, num of column to be read
 **filter**: required, string, what to match
 _separator_: optional, string, Default ;
@@ -61,11 +61,11 @@ array(
 )
 ```
 
-###->CountCSV
+### ->CountCSV
 Returns a integer with the number of lines in the csv file. 
 Accepts an offset value, in case you want to skip a header.
 
-Arguments:
+#### Arguments:
 _offset_ : optional, int, Default 0
 _separator_: optional, string, Default ;
 _enclosure_: optional string, Default "
@@ -81,11 +81,11 @@ $numlines: int 1
 ```
 
 
-###->CountCSVFilter
+### ->CountCSVFilter
 Returns a integer with the number of line in the csv where **filterfield** matches **filter**
 Accepts an offset value, in case you want to skip a header.
 
-Arguments:
+#### Arguments:
 **filterfield**: required, int, num of column to be read
 **filter**: required, string, what to match
 _offset_: optional, int, Default 0
