@@ -38,6 +38,7 @@ array(
 ```
 
 
+
 ### ->ReadCSVFilter
 Returns the CSV file, but only the lines where column **filterfield** matches **filter**
 Column numbers starts at zero. So, 0 = first column, 1 = second column and so on.
@@ -61,6 +62,8 @@ array(
 )
 ```
 
+
+
 ### ->CountCSV
 Returns a integer with the number of lines in the csv file. 
 Accepts an offset value, in case you want to skip a header.
@@ -79,6 +82,7 @@ Returns:
 ```
 $numlines: int 1
 ```
+
 
 
 ### ->CountCSVFilter
@@ -100,6 +104,7 @@ var_dump($numlines) // int: number of lines that the second column (1) has the c
 ```
 $numlines: int 1
 ```
+
 
 
 ## Known Bugs 
