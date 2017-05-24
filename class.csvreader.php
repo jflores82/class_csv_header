@@ -1,15 +1,16 @@
 <?PHP
 
 	// CSV reader class //
-	// Version 1 by Juliano F. (tibone) //
+	// Version 2 by Juliano F. (tibone) //
 	// github.com/jflores82 //
 	// Support free software //
+	// 20170524 - added functions to count the number of lines //
 	
 // Class start //
 class csvreader {
 		
 		// Variable declarations //
-		var $csv_file;      // CSV File name (from construct)
+		var $csv_file;     // CSV File name (from construct)
 		var $csv_array;    // Multidimensional array to hold csv data
 		var $csv_line;     //  Array that feeds csv_array //
 		var $counter;      // Simple counter //
@@ -80,6 +81,58 @@ class csvreader {
 				
 			}
 			return $this->csv_array; // Returns the populated array //
+		}
+		
+		// Counts the number of lines, using a offset
+		public function countCSV($offset = 0, $separator = ",", $enclosure = '"') {
+			$this->separator = $separator;
+			$this->enclosure = $enclosure;
+			$this->counter = 0;
+			$this->csv_array = array();
+			$this->offset = $offset;
+			$this->numlines = 0;
+			
+			// If the csv file exists //
+			if (($handle = fopen($this->csv_file, "r")) !== FALSE) {
+				$this->csv_line = array(); // Single Dimension array.
+			}
+			
+			// Iterates through the file
+			while (($data = fgetcsv($handle, 9999, $this->separator, $this->enclosure)) !== FALSE) {
+				if($this->counter >= $this->offset) {
+					$this->numlines++;
+				}
+				$this->counter++;
+			}
+			return $this->numlines;   // Returns the number of lines //
+		}
+		
+		// Counts the number of lines, that matches a filter string in a defined field.
+		public function countCSVFilter($filter_field, $filter, $offset = 0, $separator = ",", $enclosure = '"') {
+			$this->separator = $separator;
+			$this->enclosure = $enclosure;
+			$this->counter = 0;
+			$this->csv_array = array(); 
+			$this->offset = $offset;
+			$this->numlines = 0;
+			$this->filter_field = $filter_field;
+			$this->filter = $filter;
+			
+			// If the csv file exists //
+			if (($handle = fopen($this->csv_file, "r")) !== FALSE) {
+				$this->csv_line = array(); // Single Dimension array.
+			}
+			
+			// Iterates through the file
+			while (($data = fgetcsv($handle, 9999, $this->separator, $this->enclosure)) !== FALSE) {
+				if($this->counter >= $this->offset) {
+					if($data[$this->filter_field] == $this->filter) {
+						$this->numlines++;
+					}
+				}
+				$this->counter++;
+			}
+			return $this->numlines;   // Returns the number of lines //
 		}
 }
 
