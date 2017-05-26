@@ -4,9 +4,13 @@
 	// Version 2 by Juliano F. (tibone) 
 	// github.com/jflores82 
 	// Support free software 
-	// 20170524 - added functions to count the number of lines 
+	// 20170526 - added option to offset in methos readCSVfilter
 	// 20170525 - added functions to retrieve the minmax values of numeric and alphanumeric columns 
 	//			- added class to count groups of ocurrences on file 
+	//
+	// 20170524 - added functions to count the number of lines 
+	
+	
 	
 	
 // Class start //
@@ -28,13 +32,15 @@ class csvreader {
 		}
 		
 		// Reads the csv file and apply a filter to every line, only returning the lines that matches the filter //
-		public function readCSVfilter($filter_field, $filter, $separator = ",", $enclosure = '"') {
+		public function readCSVfilter($filter_field, $filter, $offset = 1, $separator = ",", $enclosure = '"') {
 			// Load the variables //
 			$this->filter_field = $filter_field;
 			$this->filter = $filter;
 			$this->separator = $separator;
 			$this->enclosure = $enclosure;
 			$this->csv_array = array();
+			$this->counter = 0;
+			$this->offset = $offset;
 			
 			// If the csv file exists //
 			if (($handle = fopen($this->csv_file, "r")) !== FALSE) {
@@ -43,12 +49,15 @@ class csvreader {
 				// Iterates through every line of the csv //
 				while (($data = fgetcsv($handle, 9999, $this->separator, $this->enclosure)) !== FALSE) { 
 						
+					if($this->counter >= $this->offset) {
 						// If the filter validates, we load the line into the multidimensional array //
 						if($data[$this->filter_field] == $this->filter) {
 							$this->csv_line = $data; 
 							array_push($this->csv_array, $this->csv_line);
 						}
 					}
+				$this->counter++;
+				}
 			}
 			return $this->csv_array;  // Returns the populated array //
 		}	

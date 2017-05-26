@@ -49,11 +49,14 @@ array(
 
 Returns the CSV file, but only the lines where column **filterfield** matches **filter**
 Column numbers starts at zero. So, 0 = first column, 1 = second column and so on.
+Acceps an offset number, to skip the first lines, most used with headers.
 
 #### Arguments:
 **filterfield**: required, int, num of column to be read
 
 **filter**: required, string, what to match
+
+_offset_: optional, int, number of lines to offset.
 
 _separator_: optional, string, Default ;
 
