@@ -31,8 +31,34 @@ class csvreader {
 			$this->csv_file = $csv_file;   // Loads the csv file name into the variable //
 		}
 		
+		// Reads the entire csv file and returns an array for it. //
+		public function readCSV($offset = 1,$separator = ",", $enclosure = '"') {
+			$this->separator = $separator;
+			$this->enclosure = $enclosure;
+			$this->counter = 0;
+			$this->csv_array = array();
+			$this->offset = $offset;
+			
+			// If the csv file exists //
+			if (($handle = fopen($this->csv_file, "r")) !== FALSE) {
+				
+				$this->csv_line = array(); // Single dimension array //
+				
+				// Iterates through the whole file //
+				while (($data = fgetcsv($handle, 9999, $this->separator, $this->enclosure)) !== FALSE) {
+					if($this->counter >= $this->offset) {
+						$this->csv_line = $data; 
+						array_push($this->csv_array, $this->csv_line);
+					}
+				$this->counter++; // Increases counter with every line //
+				}
+				
+			}
+			return $this->csv_array; // Returns the populated array //
+		}
+		
 		// Reads the csv file and apply a filter to every line, only returning the lines that matches the filter //
-		public function readCSVfilter($filter_field, $filter, $offset = 1, $separator = ",", $enclosure = '"') {
+		public function readFilterCSV($filter_field, $filter, $offset = 1, $separator = ",", $enclosure = '"') {
 			// Load the variables //
 			$this->filter_field = $filter_field;
 			$this->filter = $filter;
@@ -62,33 +88,6 @@ class csvreader {
 			return $this->csv_array;  // Returns the populated array //
 		}	
 		
-		
-		// Reads the entire csv file and returns an array for it. //
-		public function readCSV($offset = 1,$separator = ",", $enclosure = '"') {
-			$this->separator = $separator;
-			$this->enclosure = $enclosure;
-			$this->counter = 0;
-			$this->csv_array = array();
-			$this->offset = $offset;
-			
-			// If the csv file exists //
-			if (($handle = fopen($this->csv_file, "r")) !== FALSE) {
-				
-				$this->csv_line = array(); // Single dimension array //
-				
-				// Iterates through the whole file //
-				while (($data = fgetcsv($handle, 9999, $this->separator, $this->enclosure)) !== FALSE) {
-					if($this->counter >= $this->offset) {
-						$this->csv_line = $data; 
-						array_push($this->csv_array, $this->csv_line);
-					}
-				$this->counter++; // Increases counter with every line //
-				}
-				
-			}
-			return $this->csv_array; // Returns the populated array //
-		}
-		
 		// Counts the number of lines, using a optional offset //
 		public function countCSV($offset = 0, $separator = ",", $enclosure = '"') {
 			$this->separator = $separator;
@@ -111,7 +110,7 @@ class csvreader {
 		}
 		
 		// Counts the number of lines, that matches a filter string in a defined field.
-		public function countCSVFilter($filter_field, $filter, $offset = 0, $separator = ",", $enclosure = '"') {
+		public function countFilterCSV($filter_field, $filter, $offset = 0, $separator = ",", $enclosure = '"') {
 			$this->separator = $separator;
 			$this->enclosure = $enclosure;
 			$this->counter = 0;
@@ -203,7 +202,7 @@ class csvreader {
 		}
 		
 		// Count values grouped on a given column (field) //
-		public function countGroup($filter_field, $ascdesc = 0, $offset = 0, $limit = 999999, $separator = ",", $enclosure = '"') {
+		public function countGroupCSV($filter_field, $ascdesc = 0, $offset = 0, $limit = 999999, $separator = ",", $enclosure = '"') {
 			$this->separator = $separator;
 			$this->enclosure = $enclosure;
 			$this->counter = 0;
@@ -236,7 +235,34 @@ class csvreader {
 			array_splice($countGroup, $this->limit); 
 			return $countGroup;
 		}
-
+		
+		// Calculates the avg of the values in a single column (field) //
+		public function avgFieldCSV($field, $offset = 0, $separator = ",", $enclosure = '"') {
+			$this->separator = $separator;
+			$this->enclosure = $enclosure;
+			$this->counter = 0;
+			$this->csv_array = array();
+			$this->offset = $offset;
+			$this->field = $field;
+			$this->numlines = 0;
+			$this->sumField = 0;
+			
+			if (($handle = fopen($this->csv_file, "r")) !== FALSE) {
+				while (($data = fgetcsv($handle, 9999, $this->separator, $this->enclosure)) !== FALSE) {
+					// Offset, if used //
+					if($this->counter >= $this->offset) {
+						if(is_numeric($data[$this->field]) == TRUE) {
+							$this->sumField = $this->sumField + $data[$this->field];
+							$this->numlines++;
+						}
+					}
+					$this->counter++;
+				}
+			}
+			
+			$avg = $this->sumField / $this->numlines;
+			return $avg;
+		}
 }
 
 ?>

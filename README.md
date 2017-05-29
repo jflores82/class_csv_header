@@ -45,7 +45,7 @@ array(
 
 
 
-### ->ReadCSVFilter
+### ->ReadFilterCSV
 
 Returns the CSV file, but only the lines where column **filterfield** matches **filter**
 Column numbers starts at zero. So, 0 = first column, 1 = second column and so on.
@@ -106,7 +106,7 @@ $numlines: int 1
 
 
 
-### ->CountCSVFilter
+### ->CountFilterCSV
 Returns a integer with the number of line in the csv where **filterfield** matches **filter**
 Accepts an offset value, in case you want to skip a header.
 
@@ -191,9 +191,9 @@ $minmax_value: Array([0]->a, [1]->z)
 
 
 
-### -> countGroup
-Return an array, with the key being the all the values found in a specified column and the value being the number of times this key was found
-Acceps an offset value, in case you want to skip a header.
+### -> countGroupCSV
+Returns an array, with the key being the all the values found in a specified column and the value being the number of times this key was found
+Accepts an offset value, in case you want to skip a header.
 
 #### Arguments
 **filterfield**: required, int, num of column to be read
@@ -211,14 +211,36 @@ _enclosure_: optional string, Default "
 
 ex.
 ```php
-$group_return = $csv->countGroup(1,1,1,5);  // Returns the first five rows, skipping the first, in descending order. Column number 1.
+$group_return = $csv->countGroupCSV(1,1,1,5);  // Returns the first five rows, skipping the first, in descending order. Column number 1.
 var_dump($group) // array (key = something, value = number of something)
 ```
 
 
-Retuns:
+Returns:
 ```
 $group_return: Array([foo]->2, [bar]->1, [foobar]->0)
+```
+
+
+
+### -> avgFieldCSV
+Returns an int. Which is the average of the values on a given numeric column. 
+Accepts an offset value, in case you want to skip a header.
+
+#### Arguments:
+**field**: required, int, num of column to be read
+
+_offset_: optional, int, Default 0
+
+ex.
+```php
+$avg = $csv->avgFieldCSV(1,1); // Returns the average of values on the first column, given a header of 1.
+var_dump($avg); // int.
+```
+
+Returns:
+```
+$csv: int (Value)
 ```
 
 
